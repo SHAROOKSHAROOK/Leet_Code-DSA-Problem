@@ -1,0 +1,48 @@
+// Function to create a new node with given data
+struct ListNode* newNode(int data) {
+    struct ListNode* new = (struct ListNode*)malloc(sizeof(struct ListNode));
+    new->val = data;        // Assign value
+    new->next = NULL;       // Next pointer is NULL initially
+    return new;             // Return created node
+}
+
+struct ListNode* addTwoNumbers(struct ListNode* l1, struct ListNode* l2) {
+    
+    struct ListNode dummy;        // Dummy node to simplify result list creation
+    struct ListNode* temp = &dummy; // Pointer to build the result list
+    dummy.next = NULL;            // Initialize dummy’s next as NULL
+    int carry = 0;                // Carry to hold overflow during addition
+    
+    // Loop until both lists are exhausted and carry is 0
+    while (l1 != NULL || l2 != NULL || carry != 0) {
+        int x = 0;   // Value from l1
+        int y = 0;   // Value from l2
+
+        // Take value from l1 if available, then move forward
+        if (l1 != NULL) {
+            x = l1->val;
+            l1 = l1->next;
+        }
+
+        // Take value from l2 if available, then move forward
+        if (l2 != NULL) {
+            y = l2->val;
+            l2 = l2->next;
+        }
+
+        // Calculate sum of current digits + carry
+        int sum = x + y + carry;
+
+        // Update carry for next iteration
+        carry = sum / 10;
+
+        // Create a new node with digit (sum % 10)
+        temp->next = newNode(sum % 10);
+
+        // Move temp to the new node (advance in result list)
+        temp = temp->next;
+    }
+
+    // Return the head of the new list (skip dummy)
+    return dummy.next;
+}
